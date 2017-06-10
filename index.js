@@ -4,9 +4,32 @@
 var app = new PIXI.Application(window.innerWidth, window.innerHeight, {backgroundColor: 0xffffff});
 document.body.appendChild(app.view);
 
-//var x,y;
-//if (window.innerHeight < 100) {}
+function drawCell(rowwIndex,columnIndex) {
+    var color = 0x00ff00;
+    if(gird[rowwIndex][columnIndex] === 2)
+    {
+        color = 0xff6666;
+    }
+    var graphics = new PIXI.Graphics();
+    graphics.beginFill(color, 1);
+    graphics.drawRect(app.renderer.width / 6.5 + columnIndex * 65, app.renderer.height / 3 + rowwIndex * 65, 60, 60);
+    app.stage.addChild(graphics);
 
+    if(gird[rowwIndex][columnIndex] !== 0)
+    {
+        var RandomNumber = new PIXI.Text(gird[rowwIndex][columnIndex], {
+            fontsize: 100
+        });
+        RandomNumber.anchor.set(0.5);
+        RandomNumber.x = app.renderer.width / 6.5 + 30 + columnIndex * 65;
+        RandomNumber.y = app.renderer.height / 3 + 30 + rowwIndex * 65;
+        app.stage.addChild(RandomNumber);
+    }
+
+}
+
+//var rowwIndex,columnIndex;
+//if (window.innerHeight < 100) {}
 var basicText = new PIXI.Text('2048',{
     fontFamily: 'Arial',
     fontsize: 80,
@@ -25,41 +48,39 @@ var basicText = new PIXI.Text('2048',{
 });
 basicText.anchor.set(0.5);
 basicText.x = app.renderer.width/2;
-basicText.y = app.renderer.height/5;
 
+basicText.y = app.renderer.height/5;
 app.stage.addChild(basicText);
 var gird = []
 for (var i = 0; i < 4; i++) {
-  gird[i] = [0,0,0,0]
+    gird[i] = [0,0,0,0]
 }
 
 
 for (var i = 0; i <4 ; i++) {
-  for (var j = 0; j < 4; j++) {
-      var graphics = new PIXI.Graphics();
-      graphics.beginFill(0xFF700B, 1);
-      graphics.drawRect(app.renderer.width/6.5 + j*65, app.renderer.height/3 +i*65, 60, 60);
-      app.stage.addChild(graphics);
+    for (var j = 0; j < 4; j++) {
+        drawCell(i,j)
   }
 }
 
 function generateRandomNumber() {
     return Math.floor(Math.random() * 4);
 }
-var x = generateRandomNumber();
-var y = generateRandomNumber();
+var rowwIndex = generateRandomNumber();
 
-var graphics = new PIXI.Graphics();
-graphics.beginFill(0xff6666, 1);
-graphics.drawRect(app.renderer.width/6.5 + x*65, app.renderer.height/3 + y*65, 60, 60);
-app.stage.addChild(graphics);
+var columnIndex = generateRandomNumber();
 
-var RandomNumber = new PIXI.Text('2',{
-    fontsize: 100
+gird[rowwIndex][columnIndex] = 2;
+drawCell(rowwIndex,columnIndex);
+
+document.addEventListener("keydown", function (event) {
+    //console.log(event);
+    if(event.key === "ArrowUp")
+    {
+        console.log("up")
+    }
+    if(event.key === "ArrowRight")
+    {
+        console.log("right");
+    }
 });
-
-RandomNumber.anchor.set(0.5);
-RandomNumber.x = app.renderer.width/6.5 + 30 + x*65;
-RandomNumber.y = app.renderer.height/3 + 30 +y*65;
-app.stage.addChild(RandomNumber);
-
